@@ -1,4 +1,8 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key, required this.title}) : super(key: key);
@@ -9,13 +13,31 @@ class LoginPage extends StatefulWidget {
 }
 
 class LoginPageState extends State<LoginPage> {
+  TextEditingController cardNumberController = TextEditingController();
+  TextEditingController pinController = TextEditingController();
+
+  InputDecoration createInputDecoration(String hint, String iconAsset) {
+    // function for creating decoration for login text field
+    return InputDecoration(
+        border: OutlineInputBorder(
+            borderSide: BorderSide.none,
+            borderRadius: BorderRadius.circular(10.0)),
+        filled: true,
+        fillColor: Colors.black12,
+        prefixIcon: Padding(
+            padding: const EdgeInsets.all(12),
+            child: SvgPicture.asset(iconAsset, color: Colors.black38)),
+        hintText: hint,
+        hintStyle: const TextStyle(color: Colors.black38, letterSpacing: 1));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: const Color.fromARGB(255, 40, 86, 212),
         body: Center(
             child: FractionallySizedBox(
-          widthFactor: 0.3,
+          widthFactor: 0.25,
           heightFactor: 0.6,
           child: Container(
               decoration: const BoxDecoration(
@@ -30,7 +52,57 @@ class LoginPageState extends State<LoginPage> {
                   ]),
               child: Form(
                 child: Column(
-                  children: [],
+                  children: [
+                    Padding(
+                        padding: const EdgeInsets.all(20),
+                        child: SvgPicture.asset(
+                          'assets/bank-flat.svg',
+                          width: 128,
+                          height: 128,
+                        )),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(24, 8, 24, 8),
+                      child: TextFormField(
+                          controller: cardNumberController,
+                          decoration: createInputDecoration(
+                              'Card Number', 'assets/card-number.svg'),
+                          enableSuggestions: false,
+                          style: const TextStyle(letterSpacing: 8),
+                          inputFormatters: [
+                            LengthLimitingTextInputFormatter(6),
+                            FilteringTextInputFormatter.allow(
+                                RegExp(r'[0-9]{1,6}')),
+                          ]),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(24, 8, 24, 8),
+                      child: TextFormField(
+                          controller: pinController,
+                          decoration:
+                              createInputDecoration('PIN', 'assets/pin.svg'),
+                          style: const TextStyle(letterSpacing: 8),
+                          obscureText: true,
+                          enableSuggestions: false,
+                          inputFormatters: [
+                            LengthLimitingTextInputFormatter(6),
+                            FilteringTextInputFormatter.allow(
+                                RegExp(r'[0-9]{1,6}')),
+                          ]),
+                    ),
+                    Padding(
+                        padding: const EdgeInsets.fromLTRB(24, 16, 24, 16),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            String cardNumber = cardNumberController.text;
+                            String pin = pinController.text;
+
+                            //TODO: Proccess later
+                          },
+                          style: ElevatedButton.styleFrom(
+                              minimumSize: const Size.fromHeight(48)),
+                          child: const Text("OK"),
+                        ))
+                  ],
                 ),
               )),
         )));
