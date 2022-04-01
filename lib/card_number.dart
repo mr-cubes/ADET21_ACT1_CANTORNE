@@ -30,6 +30,9 @@ class CardNumber {
   }
 
   @override
+  int get hashCode => _value.hashCode;
+
+  @override
   String toString() {
     return _value.toString().padLeft(6, '0');
   }
