@@ -5,22 +5,22 @@ class CardNumber {
     var sum = 0;
 
     sum += value % 10;
-    value = (value / 10) as int;
+    value = value ~/ 10;
 
     sum += (value % 10) * 2;
-    value = (value / 10) as int;
+    value = value ~/ 10;
 
     sum += value % 10;
-    value = (value / 10) as int;
+    value = value ~/ 10;
 
     sum += (value % 10) * 2;
-    value = (value / 10) as int;
+    value = value ~/ 10;
 
     sum += value % 10;
-    value = (value / 10) as int;
+    value = value ~/ 10;
 
     sum += (value % 10) * 2;
-    value = (value / 10) as int;
+    value = value ~/ 10;
 
     if (sum % 10 != 0) {
       throw Exception("Invalid credit card number");
