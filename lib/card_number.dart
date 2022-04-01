@@ -1,5 +1,33 @@
 class CardNumber {
-  final int _value;
+  late final int _value;
+
+  CardNumber(int value) {
+    var sum = 0;
+
+    sum += value % 10;
+    value = (value / 10) as int;
+
+    sum += (value % 10) * 2;
+    value = (value / 10) as int;
+
+    sum += value % 10;
+    value = (value / 10) as int;
+
+    sum += (value % 10) * 2;
+    value = (value / 10) as int;
+
+    sum += value % 10;
+    value = (value / 10) as int;
+
+    sum += (value % 10) * 2;
+    value = (value / 10) as int;
+
+    if (sum % 10 != 0) {
+      throw Exception("Invalid credit card number");
+    }
+
+    _value = value;
+  }
 
   @override
   String toString() {
