@@ -4,7 +4,7 @@ import 'package:atm/card_number.dart';
 import 'package:atm/name.dart';
 
 class BankService {
-  final Map<CardNumber, AccountData> _map = Map();
+  final Map<int, AccountData> _map = Map();
 
   static final BankService _instance = BankService._internal();
   BankService._internal();
@@ -14,7 +14,7 @@ class BankService {
   }
 
   Account? openAccount(CardNumber cardNumber, String pin) {
-    AccountData? item = _map[cardNumber];
+    AccountData? item = _map[cardNumber.hashCode];
 
     if (item == null) {
       return null;
@@ -33,6 +33,6 @@ class BankService {
       throw Exception("Account already exists");
     }
 
-    _map[cardNumber] = AccountData(pin, owner, initialBalance);
+    _map[cardNumber.hashCode] = AccountData(pin, owner, initialBalance);
   }
 }
