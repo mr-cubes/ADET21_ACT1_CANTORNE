@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:convert';
 
 import 'package:atm/account.dart';
 import 'package:atm/account_data.dart';
@@ -13,6 +14,33 @@ class BankService {
   BankService._internal();
 
   factory BankService() {
+    var jsonString = _instance._file.readAsStringSync();
+
+    var jsonMap = json.decode(jsonString) as Map<String, dynamic>;
+
+    for (var entry in jsonMap.entries) {
+      var pinHash = entry.value["pin-hash"];
+      var firstName = entry.value["first-name"];
+      var middleName = entry.value["middle-name"];
+      var lastName = entry.value["last-name"];
+      var extendedName = entry.value["extended-name"];
+      var balance = entry.value["balance"];
+
+      if (pinHash == null ||
+          firstName == null ||
+          middleName == null ||
+          lastName == null ||
+          extendedName == null ||
+          balance == null) {
+        throw Exception("Failed to load data");
+      }
+
+      _instance._map[int.parse(entry.key)] = AccountData(
+          pinHash,
+          Name(firstName, middleName, lastName, extendedName),
+          double.parse(balance));
+    }
+
     return _instance;
   }
 
@@ -36,7 +64,8 @@ class BankService {
       throw Exception("Account already exists");
     }
 
-    _map[cardNumber.hashCode] = AccountData(pin, owner, initialBalance);
+    _map[cardNumber.hashCode] =
+        AccountData(AccountData.hashPin(pin), owner, initialBalance);
   }
 
   void saveState() {
