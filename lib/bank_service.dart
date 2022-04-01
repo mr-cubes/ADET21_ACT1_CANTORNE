@@ -1,8 +1,9 @@
 import 'package:atm/account.dart';
 import 'package:atm/account_data.dart';
+import 'package:atm/card_number.dart';
 
 class BankService {
-  final Map<String, AccountData> _map = Map();
+  final Map<CardNumber, AccountData> _map = Map();
 
   static final BankService _instance = BankService._internal();
   BankService._internal();
@@ -11,7 +12,7 @@ class BankService {
     return _instance;
   }
 
-  Account? openAccount(String cardNumber, String pin) {
+  Account? openAccount(CardNumber cardNumber, String pin) {
     AccountData? item = _map[cardNumber];
 
     if (item == null) {
