@@ -8,8 +8,8 @@ class AccountData {
   late Name _owner;
   late double _balance;
 
-  AccountData(String pin, Name owner, double initialBalance) {
-    _correctHash = hashPin(pin);
+  AccountData(String pinHash, Name owner, double initialBalance) {
+    _correctHash = pinHash;
     _owner = owner;
     _balance = initialBalance;
   }
@@ -31,4 +31,13 @@ class AccountData {
 
     return buffer.toString();
   }
+
+  String get jsonString => '''{
+"pin-hash":"$_correctHash",
+"first-name":"${_owner.firstName}",
+"middle-name":"${_owner.middleName}",
+"last-name":"${_owner.lastName}",
+"extend-name":"${_owner.extendedName}",
+"balance":"$_balance"
+}''';
 }
