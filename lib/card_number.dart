@@ -29,6 +29,10 @@ class CardNumber {
     _value = value;
   }
 
+  static CardNumber parse(String value) {
+    return CardNumber(int.parse(value));
+  }
+
   @override
   int get hashCode => _value.hashCode;
 
