@@ -1,8 +1,9 @@
-import 'dart:developer';
-
+import 'package:atm/card_number.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:atm/bank_service.dart';
+import 'package:atm/account.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key, required this.title}) : super(key: key);
@@ -13,8 +14,11 @@ class LoginPage extends StatefulWidget {
 }
 
 class LoginPageState extends State<LoginPage> {
+  BankService bankService = BankService();
+
   TextEditingController cardNumberController = TextEditingController();
   TextEditingController pinController = TextEditingController();
+  late TextFormField cardNumberInput;
 
   InputDecoration createInputDecoration(String hint, String iconAsset) {
     // function for creating decoration for login text field
@@ -31,8 +35,47 @@ class LoginPageState extends State<LoginPage> {
         hintStyle: const TextStyle(color: Colors.black38, letterSpacing: 1));
   }
 
+  void displayError(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(message, textAlign: TextAlign.center),
+        duration: const Duration(seconds: 1)));
+  }
+
+  void submit(BuildContext context) {
+    var cardNumber;
+    try {
+      cardNumber = CardNumber.parse(cardNumberController.text);
+      var pin = pinController.text;
+      Account? account = bankService.openAccount(cardNumber, pin);
+
+      if (account == null) {
+        displayError(context, "Cannot open account");
+      }
+    } catch (ex) {
+      displayError(context, "Invalid card number");
+    }
+
+    //account.getBalance();
+
+    //TODO: Proccess later
+  }
+
   @override
   Widget build(BuildContext context) {
+    cardNumberInput = TextFormField(
+        controller: cardNumberController,
+        decoration:
+            createInputDecoration('Card Number', 'assets/card-number.svg'),
+        enableSuggestions: false,
+        style: const TextStyle(letterSpacing: 8),
+        inputFormatters: [
+          LengthLimitingTextInputFormatter(6),
+          FilteringTextInputFormatter.allow(RegExp(r'[0-9]{1,6}')),
+        ],
+        validator: (value) {
+          return null;
+        });
+
     return Scaffold(
         backgroundColor: const Color.fromARGB(255, 40, 86, 212),
         body: Center(
@@ -61,19 +104,8 @@ class LoginPageState extends State<LoginPage> {
                           height: 128,
                         )),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(24, 8, 24, 8),
-                      child: TextFormField(
-                          controller: cardNumberController,
-                          decoration: createInputDecoration(
-                              'Card Number', 'assets/card-number.svg'),
-                          enableSuggestions: false,
-                          style: const TextStyle(letterSpacing: 8),
-                          inputFormatters: [
-                            LengthLimitingTextInputFormatter(6),
-                            FilteringTextInputFormatter.allow(
-                                RegExp(r'[0-9]{1,6}')),
-                          ]),
-                    ),
+                        padding: const EdgeInsets.fromLTRB(24, 8, 24, 8),
+                        child: cardNumberInput),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(24, 8, 24, 8),
                       child: TextFormField(
@@ -92,12 +124,7 @@ class LoginPageState extends State<LoginPage> {
                     Padding(
                         padding: const EdgeInsets.fromLTRB(24, 16, 24, 16),
                         child: ElevatedButton(
-                          onPressed: () {
-                            String cardNumber = cardNumberController.text;
-                            String pin = pinController.text;
-
-                            //TODO: Proccess later
-                          },
+                          onPressed: () => submit(context),
                           style: ElevatedButton.styleFrom(
                               minimumSize: const Size.fromHeight(48)),
                           child: const Text("OK"),
