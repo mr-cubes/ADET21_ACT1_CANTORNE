@@ -1,4 +1,5 @@
 import 'package:atm/card_number.dart';
+import 'package:atm/dashboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -42,22 +43,26 @@ class LoginPageState extends State<LoginPage> {
   }
 
   void submit(BuildContext context) {
-    var cardNumber;
     try {
-      cardNumber = CardNumber.parse(cardNumberController.text);
+      var cardNumber = CardNumber.parse(cardNumberController.text);
       var pin = pinController.text;
       Account? account = bankService.openAccount(cardNumber, pin);
 
       if (account == null) {
         displayError(context, "Cannot open account");
+        return;
       }
+
+      cardNumberController.text = "";
+      pinController.text = "";
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => Dashboard(account)),
+      );
     } catch (ex) {
       displayError(context, "Invalid card number");
     }
-
-    //account.getBalance();
-
-    //TODO: Proccess later
   }
 
   @override
