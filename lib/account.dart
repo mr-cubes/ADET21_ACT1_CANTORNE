@@ -7,4 +7,5 @@ class Account {
   Account(this._accountData);
 
   Name getOwner() => _accountData.owner;
+  double getBalance() => _accountData.balance;
 }
