@@ -34,7 +34,9 @@ class DashboardState extends State<Dashboard> {
               child: ElevatedButton(
                 style: buttonStyle,
                 child: Text("Check Balance", style: buttonTextStyle),
-                onPressed: () {},
+                onPressed: () {
+                  showCheckBalanceDialog(context);
+                },
               )),
           Padding(
               padding: const EdgeInsets.all(12),
@@ -60,5 +62,60 @@ class DashboardState extends State<Dashboard> {
                 },
               ))
         ])));
+  }
+
+  void showCheckBalanceDialog(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Dialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0)), //this right here
+            child: SizedBox(
+              width: 360,
+              height: 180,
+              child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Padding(
+                          padding: const EdgeInsets.all(12),
+                          child: Text(
+                              "Your Balance is PHP ${widget.account.getBalance().toStringAsFixed(2)}",
+                              style: const TextStyle(
+                                  color: Colors.black87, fontSize: 16),
+                              textAlign: TextAlign.center)),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Padding(
+                                padding: const EdgeInsets.all(12),
+                                child: ElevatedButton(
+                                  child: const Text("Withdraw"),
+                                  onPressed: () {},
+                                )),
+                            Padding(
+                                padding: const EdgeInsets.all(8),
+                                child: ElevatedButton(
+                                  child: const Text("Deposit"),
+                                  onPressed: () {},
+                                )),
+                            Padding(
+                                padding: const EdgeInsets.all(12),
+                                child: ElevatedButton(
+                                  child: const Text("Go back"),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                ))
+                          ])
+                    ],
+                  )),
+            ),
+          );
+        });
   }
 }
