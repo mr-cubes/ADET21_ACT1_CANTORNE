@@ -5,13 +5,12 @@ import 'package:atm/name.dart';
 
 class AccountData {
   late String _correctHash;
-  late Name _owner;
-  late double _balance;
+  late Name owner;
+  late double balance;
 
-  AccountData(String pinHash, Name owner, double initialBalance) {
+  AccountData(String pinHash, this.owner, double initialBalance) {
     _correctHash = pinHash;
-    _owner = owner;
-    _balance = initialBalance;
+    balance = initialBalance;
   }
 
   bool isPinMatch(String pin) {
@@ -34,10 +33,10 @@ class AccountData {
 
   String get jsonString => '''{
 "pin-hash":"$_correctHash",
-"first-name":"${_owner.firstName}",
-"middle-name":"${_owner.middleName}",
-"last-name":"${_owner.lastName}",
-"extend-name":"${_owner.extendedName}",
-"balance":"$_balance"
+"first-name":"${owner.firstName}",
+"middle-name":"${owner.middleName}",
+"last-name":"${owner.lastName}",
+"extend-name":"${owner.extendedName}",
+"balance":"$balance"
 }''';
 }
