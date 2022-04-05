@@ -36,7 +36,7 @@ class AccountData {
 "first-name":"${owner.firstName}",
 "middle-name":"${owner.middleName}",
 "last-name":"${owner.lastName}",
-"extend-name":"${owner.extendedName}",
+"extended-name":"${owner.extendedName}",
 "balance":"$balance"
 }''';
 }
