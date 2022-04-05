@@ -10,11 +10,10 @@ class BankService {
   final Map<int, AccountData> _map = {};
   final File _file = File("bank_data.json");
 
-  static final BankService _instance = BankService._internal();
-  BankService._internal();
+  static final BankService _instance = BankService();
 
-  factory BankService() {
-    var jsonString = _instance._file.readAsStringSync();
+  BankService() {
+    var jsonString = _file.readAsStringSync();
 
     var jsonMap = json.decode(jsonString) as Map<String, dynamic>;
 
@@ -35,13 +34,11 @@ class BankService {
         throw Exception("Failed to load data");
       }
 
-      _instance._map[int.parse(entry.key)] = AccountData(
+      _map[int.parse(entry.key)] = AccountData(
           pinHash,
           Name(firstName, middleName, lastName, extendedName),
           double.parse(balance));
     }
-
-    return _instance;
   }
 
   Account? openAccount(CardNumber cardNumber, String pin) {
