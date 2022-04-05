@@ -7,7 +7,7 @@ import 'package:atm/card_number.dart';
 import 'package:atm/name.dart';
 
 class BankService {
-  final Map<int, AccountData> _map = Map();
+  final Map<int, AccountData> _map = {};
   final File _file = File("bank_data.json");
 
   static final BankService _instance = BankService._internal();
@@ -51,7 +51,7 @@ class BankService {
       return null;
     }
 
-    var accountData = item as AccountData;
+    var accountData = item;
 
     if (!accountData.isPinMatch(pin)) return null;
 
@@ -84,5 +84,9 @@ class BankService {
     sink.writeln('}');
 
     sink.close();
+  }
+
+  static BankService getService() {
+    return BankService._instance;
   }
 }
