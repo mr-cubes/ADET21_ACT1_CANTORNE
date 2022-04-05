@@ -15,8 +15,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class LoginPageState extends State<LoginPage> {
-  BankService bankService = BankService();
-
   TextEditingController cardNumberController = TextEditingController();
   TextEditingController pinController = TextEditingController();
   late TextFormField cardNumberInput;
@@ -46,7 +44,7 @@ class LoginPageState extends State<LoginPage> {
     try {
       var cardNumber = CardNumber.parse(cardNumberController.text);
       var pin = pinController.text;
-      Account? account = bankService.openAccount(cardNumber, pin);
+      Account? account = BankService.getService().openAccount(cardNumber, pin);
 
       if (account == null) {
         displayError(context, "Cannot open account");
