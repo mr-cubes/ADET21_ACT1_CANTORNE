@@ -8,4 +8,8 @@ class Account {
 
   Name getOwner() => _accountData.owner;
   double getBalance() => _accountData.balance;
+
+  void withdraw(double amount) {
+    _accountData.balance -= amount;
+  }
 }
