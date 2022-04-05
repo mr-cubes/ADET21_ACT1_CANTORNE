@@ -55,7 +55,9 @@ class DashboardState extends State<Dashboard> {
               child: ElevatedButton(
                 style: buttonStyle,
                 child: Text("Deposit", style: buttonTextStyle),
-                onPressed: () {},
+                onPressed: () {
+                  showDepositDialog(context);
+                },
               )),
           Padding(
               padding: const EdgeInsets.all(12),
@@ -109,7 +111,10 @@ class DashboardState extends State<Dashboard> {
                                 padding: const EdgeInsets.all(8),
                                 child: ElevatedButton(
                                   child: const Text("Deposit"),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                    showDepositDialog(context);
+                                  },
                                 )),
                             Padding(
                                 padding: const EdgeInsets.all(12),
@@ -187,6 +192,75 @@ class DashboardState extends State<Dashboard> {
                                   child: const Text("OK"),
                                   onPressed: () {
                                     widget.account.withdraw(
+                                        double.parse(amountCountroller.text));
+                                    Navigator.pop(context);
+                                  },
+                                ))
+                          ])
+                    ],
+                  )),
+            ),
+          );
+        });
+  }
+
+  void showDepositDialog(BuildContext context) {
+    var amountCountroller = TextEditingController(text: "200.00");
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Dialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0)), //this right here
+            child: SizedBox(
+              width: 285,
+              height: 210,
+              child: Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Padding(
+                          padding: const EdgeInsets.all(8),
+                          child: Text(
+                              "Balance PHP ${widget.account.getBalance().toStringAsFixed(2)}",
+                              style: const TextStyle(
+                                  color: Colors.black87, fontSize: 16),
+                              textAlign: TextAlign.center)),
+                      Padding(
+                          padding: const EdgeInsets.all(8),
+                          child: SizedBox(
+                              width: 200,
+                              child: TextFormField(
+                                  controller: amountCountroller,
+                                  keyboardType: TextInputType.number,
+                                  textAlign: TextAlign.center,
+                                  inputFormatters: [
+                                    NumericalRangeFormatter(200, 30000, 100)
+                                  ],
+                                  decoration: const InputDecoration(
+                                      label: Text("Amount",
+                                          textAlign: TextAlign.center),
+                                      hintText: "Enter amount")))),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Padding(
+                                padding: const EdgeInsets.all(12),
+                                child: ElevatedButton(
+                                  child: const Text("Cancel"),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                )),
+                            Padding(
+                                padding: const EdgeInsets.all(12),
+                                child: ElevatedButton(
+                                  child: const Text("OK"),
+                                  onPressed: () {
+                                    widget.account.deposit(
                                         double.parse(amountCountroller.text));
                                     Navigator.pop(context);
                                   },
