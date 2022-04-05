@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:atm/account.dart';
+import 'package:atm/bank_service.dart';
 import 'package:atm/numerical_range_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -193,6 +194,8 @@ class DashboardState extends State<Dashboard> {
                                   onPressed: () {
                                     widget.account.withdraw(
                                         double.parse(amountCountroller.text));
+                                    BankService.getService().saveState();
+
                                     Navigator.pop(context);
                                   },
                                 ))
@@ -262,6 +265,8 @@ class DashboardState extends State<Dashboard> {
                                   onPressed: () {
                                     widget.account.deposit(
                                         double.parse(amountCountroller.text));
+                                    BankService.getService().saveState();
+
                                     Navigator.pop(context);
                                   },
                                 ))
