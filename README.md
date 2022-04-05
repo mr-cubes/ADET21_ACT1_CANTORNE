@@ -1,16 +1,11 @@
-# atm
+# Simple ATM program
+### Sample Data
+| Card. No  |  PIN    |
+| --------- | ------- |
+|   344432  |  123456 |
+|   207969  |  123456 |
+|   507087  |  123456 |
+|   867515  |  123456 |
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Stored on json:
+https://github.com/mr-cubes/ADET21_ACT1_CANTORNE/blob/8e2dfaf8cd6604f5ec3d274a28208cc9f63f9c5a/bank_data.json
